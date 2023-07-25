@@ -1,25 +1,33 @@
+using FinancialControl.Api.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//builder.Environment.EnvironmentName = builder.Environment.EnvironmentName;
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+ConfigureServices(builder.Services);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+Configure(app);
 
 app.Run();
+
+
+void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllers();
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerConfig();
+}
+
+void Configure(WebApplication app)
+{
+    app.UseSwaggerConfig();
+
+    app.UseHttpsRedirection();
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+}
