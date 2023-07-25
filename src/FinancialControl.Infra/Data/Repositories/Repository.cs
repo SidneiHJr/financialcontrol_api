@@ -6,31 +6,38 @@ namespace FinancialControl.Infra.Data
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : EntityBase
     {
-        public DbSet<TEntity> Table => throw new NotImplementedException();
+        public readonly Context _context;
 
-        public Task DeleteAsync(Guid id)
+        public Repository(Context context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public async Task<IQueryable<TEntity>> GetAsync()
+        public DbSet<TEntity> Table => _context.Set<TEntity>();
+
+        public virtual async Task<IQueryable<TEntity>> GetAsync()
         {
             return await Task.FromResult(Table);
         }
 
-        public Task<TEntity> GetAsync(Guid id)
+        public virtual async Task<TEntity> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await Table.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task InsertAsync(TEntity entity)
+        public virtual async Task InsertAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            await Table.AddAsync(entity);
         }
 
-        public Task UpdateAsync(TEntity entity)
+        public virtual void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            Table.Update(entity);
+        }
+        public virtual async Task DeleteAsync(Guid id)
+        {
+            var entity = await GetAsync(id);
+            Table.Remove(entity);
         }
     }
 }

@@ -7,8 +7,6 @@ namespace FinancialControl.Api.Configuration
         public static IServiceCollection AddSwaggerConfig(this IServiceCollection services)
         {
 
-            services.AddEndpointsApiExplorer();
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo()

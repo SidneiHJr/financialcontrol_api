@@ -9,7 +9,7 @@ namespace FinancialControl.Core.Interfaces
         Task<IQueryable<TEntity>> GetAsync();
         Task<TEntity> GetAsync(Guid id);
         Task InsertAsync(TEntity entity);
-        Task UpdateAsync(TEntity entity);
+        void Update(TEntity entity);
         Task DeleteAsync(Guid id);  
     }
 }

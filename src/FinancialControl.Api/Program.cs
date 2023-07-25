@@ -2,9 +2,11 @@ using FinancialControl.Api.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Environment.EnvironmentName = builder.Environment.EnvironmentName;
+builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true);
 
-ConfigureServices(builder.Services);
+ConfigureServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 
@@ -13,21 +15,18 @@ Configure(app);
 app.Run();
 
 
-void ConfigureServices(IServiceCollection services)
+void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
-    services.AddControllers();
     services.AddEndpointsApiExplorer();
+    services.AddDependencyConfig();
     services.AddSwaggerConfig();
+    services.AddIdentityConfig();
+    services.AddApiConfig(configuration);
 }
 
 void Configure(WebApplication app)
 {
     app.UseSwaggerConfig();
-
-    app.UseHttpsRedirection();
-
-    app.UseAuthorization();
-
-    app.MapControllers();
+    app.UseApiConfig();
 
 }
