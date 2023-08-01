@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinancialControl.Infra.Data
 {
-    public class Context : DbContext
+    public class Context : IdentityDbContext
     {
         protected Context()
         {
